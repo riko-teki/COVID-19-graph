@@ -1,6 +1,6 @@
 # COVID19Graph
 ## 新型コロナウイルス感染状況のグラフ
-https://riko-teki.github.io/covid19graph/
+https://riko-teki.github.io/COVID-19-graph/
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.2.
 
