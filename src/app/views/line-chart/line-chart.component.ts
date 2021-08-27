@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, ChartDataSets, ChartType } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
+import { HttpClientService } from 'src/app/services/http-client.service';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.scss']
+  styleUrls: ['./line-chart.component.scss'],
 })
 export class LineChartComponent implements OnInit {
   // https://qiita.com/yuuton8823/items/5b943c57210ea3417e6b
   // data
-  lineChartData: ChartDataSets[] = [
+  lineChartData: ChartDataSets[] =[
     {
       data: [100, 60, 90, 0, 80, 50],
-      label: '平均湿度'
+      label: '新規陽性者数',
     },
-  ];
+  ] 
 
   // ラベル
   lineChartLabels: Label[] = [
@@ -43,10 +45,21 @@ export class LineChartComponent implements OnInit {
   lineChartPlugins = [];
   lineChartType: ChartType = 'line'; // グラフの種類
 
-
-  constructor() { }
+  constructor(private httpClientService: HttpClientService) {}
 
   ngOnInit(): void {
+    this.httpClientService
+      .getCOVID19Positive()
+      .subscribe((datas) => {
+        console.log(datas)
+        const nums: number[] = [];
+        const labelDate: string[] = [];
+       for (const data of datas) {
+         nums.push(data.adpatients)
+         labelDate.push(data.date.toString())
+       }
+       this.lineChartData[0].data = nums;
+       this.lineChartLabels = labelDate;
+      });
   }
-
 }
